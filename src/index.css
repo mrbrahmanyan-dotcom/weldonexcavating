@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Inter', sans-serif;
+    background-color: #0D0F12;
+    color: #F3F4F6;
+  }
+  
+  body {
+    @apply antialiased overflow-x-hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Montserrat', sans-serif;
+    @apply tracking-tight font-extrabold;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand-yellow hover:bg-brand-yellowDark text-brand-black font-extrabold px-6 py-3 rounded-md transition-all duration-300 shadow-brand hover:shadow-brand-lg transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply bg-transparent border-2 border-brand-yellow hover:bg-brand-yellow text-brand-yellow hover:text-brand-black font-extrabold px-6 py-3 rounded-md transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2;
+  }
+
+  .btn-outline {
+    @apply bg-transparent border border-brand-border hover:bg-brand-charcoal text-gray-300 hover:text-white px-5 py-2.5 rounded-md transition-all duration-300 flex items-center justify-center gap-2;
+  }
+
+  .glass-card {
+    @apply bg-brand-charcoal/80 backdrop-blur-md border border-brand-border rounded-lg p-6 shadow-xl transition-all duration-300;
+  }
+
+  .glass-input {
+    @apply bg-brand-black/60 border border-brand-border rounded-md px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-yellow focus:border-transparent transition-all duration-300 w-full;
+  }
+}
+
+/* Custom transitions and hover states */
+.yellow-gradient-text {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-brand-yellowLight via-brand-yellow to-brand-yellowDark;
+}
+
+.dark-gradient {
+  background: radial-gradient(circle at top right, #1F252E 0%, #0D0F12 100%);
+}
+
+.industrial-grid {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
