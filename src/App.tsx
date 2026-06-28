@@ -11,11 +11,13 @@ import Contact from './pages/Contact';
 import Admin from './pages/Admin';
 import { Toaster } from 'sonner';
 import ScrollToTop from './components/ScrollToTop';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 export default function App() {
   return (
     <Router>
       <ScrollToTop />
+      <SpeedInsights />
       <Toaster
         position="top-right"
         theme="dark"
