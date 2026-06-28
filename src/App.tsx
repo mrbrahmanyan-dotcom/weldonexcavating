@@ -16,28 +16,42 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="flex flex-col min-h-screen bg-brand-black text-gray-100 industrial-grid">
-        <Navbar />
-        <main className="flex-grow">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/services/:serviceId" element={<ServiceDetail />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/admin" element={<Admin />} />
-          </Routes>
-        </main>
-        <Footer />
-        <Toaster position="top-right" theme="dark" toastOptions={{
+      <Toaster
+        position="top-right"
+        theme="dark"
+        toastOptions={{
           style: {
             background: '#1E232A',
             color: '#FFFFFF',
-            border: '1px solid #2A303C'
+            border: '1px solid #2A303C',
+          },
+        }}
+      />
+      <Routes>
+        {/* Admin: full-screen standalone — no Navbar or Footer */}
+        <Route path="/admin" element={<Admin />} />
+
+        {/* Public site: wrapped in Navbar + Footer */}
+        <Route
+          path="/*"
+          element={
+            <div className="flex flex-col min-h-screen bg-brand-black text-gray-100 industrial-grid">
+              <Navbar />
+              <main className="flex-grow">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/services/:serviceId" element={<ServiceDetail />} />
+                  <Route path="/gallery" element={<Gallery />} />
+                  <Route path="/contact" element={<Contact />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
           }
-        }} />
-      </div>
+        />
+      </Routes>
     </Router>
   );
 }

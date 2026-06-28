@@ -109,6 +109,9 @@ if (isMockMode) {
 // Create real Supabase client (only initialized if env vars are present)
 const realSupabase = !isMockMode ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
+// Module-level auth-state listener registry for mock mode
+const mockAuthListeners: Array<(event: string, session: any) => void> = [];
+
 // Mock database query builder interface
 class MockQueryBuilder {
   private tableName: string;
@@ -117,7 +120,7 @@ class MockQueryBuilder {
     this.tableName = tableName;
   }
 
-  select(columns: string = '*') {
+  select(_columns: string = '*') {
     const data = getLocalStorageData(this.tableName, []);
     return {
       data,
@@ -142,7 +145,6 @@ class MockQueryBuilder {
       status: 'New',
       ...item
     }));
-    
     setLocalStorageData(this.tableName, [...inserted, ...data]);
     return { data: inserted, error: null };
   }
@@ -181,17 +183,20 @@ class MockQueryBuilder {
 export const supabase = !isMockMode ? realSupabase! : {
   auth: {
     signInWithPassword: async ({ email, password }: any) => {
-      // Mock Sign In: Accept any login for admin demo, use admin@weldon.com
       if (email === 'admin@weldon.com' && password === 'weldon123') {
         const mockUser = { id: 'mock-admin', email };
         const mockSession = { access_token: 'mock-token', user: mockUser };
         setLocalStorageData('session', mockSession);
+        // Fire all registered onAuthStateChange listeners so React state updates immediately
+        mockAuthListeners.forEach(cb => cb('SIGNED_IN', mockSession));
         return { data: { user: mockUser, session: mockSession }, error: null };
       }
       return { data: { user: null, session: null }, error: { message: 'Invalid credentials. Use admin@weldon.com and weldon123' } };
     },
     signOut: async () => {
       localStorage.removeItem('weldon_mock_session');
+      // Fire all listeners with null session
+      mockAuthListeners.forEach(cb => cb('SIGNED_OUT', null));
       return { error: null };
     },
     getSession: async () => {
@@ -199,24 +204,26 @@ export const supabase = !isMockMode ? realSupabase! : {
       return { data: { session }, error: null };
     },
     onAuthStateChange: (callback: any) => {
-      // Return unsubscribe mock
-      return { data: { subscription: { unsubscribe: () => {} } } };
+      mockAuthListeners.push(callback);
+      return { data: { subscription: { unsubscribe: () => {
+        const idx = mockAuthListeners.indexOf(callback);
+        if (idx > -1) mockAuthListeners.splice(idx, 1);
+      } } } };
     }
   },
   from: (tableName: string) => {
     return new MockQueryBuilder(tableName);
   },
   storage: {
-    from: (bucketName: string) => ({
+    from: (_bucketName: string) => ({
       upload: async (path: string, file: any) => {
-        // Return a mock URL using a placeholder image
         const url = URL.createObjectURL(file);
         return { data: { path, fullPath: url }, error: null };
       },
       getPublicUrl: (path: string) => {
-        // Return the path itself or a default mock
         return { data: { publicUrl: path.startsWith('blob:') ? path : 'https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80' } };
       }
     })
   }
 } as any;
+
