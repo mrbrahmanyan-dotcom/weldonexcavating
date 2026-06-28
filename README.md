@@ -1,69 +1,32 @@
-# Weldon Excavating LLC — Website
+# React + TypeScript + Vite
 
-A high-converting, production-ready, lead-generating website for **Weldon Excavating LLC** based in Munford, Alabama.
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
-## 🌐 Live Pages
+Currently, two official plugins are available:
 
-| Page | Route |
-|---|---|
-| Home | `/` |
-| About Us | `/about` |
-| Services | `/services` |
-| Land Clearing | `/services/land-clearing` |
-| Grading & Site Prep | `/services/grading-prep` |
-| Demolition | `/services/demolition` |
-| Project Gallery | `/gallery` |
-| Contact Us | `/contact` |
-| Admin Dashboard | `/admin` |
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## 🛠️ Tech Stack
+## React Compiler
 
-- **React 18** + **TypeScript** + **Vite 8**
-- **Tailwind CSS v3** — Industrial yellow/black design system
-- **Supabase** — Database, Auth, Storage (with local mock fallback)
-- **React Router DOM v6** — Client-side routing
-- **Lucide React** — Icons
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## 🚀 Getting Started
+## Expanding the Oxlint configuration
 
-```bash
-npm install
-npm run dev
+If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "oxc"],
+  "options": {
+    "typeAware": true
+  },
+  "rules": {
+    "react/rules-of-hooks": "error",
+    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+  }
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
-
-## ⚙️ Environment Setup
-
-Create a `.env` file (see `.env.example`):
-
-```env
-VITE_SUPABASE_URL=https://your-project-id.supabase.co
-VITE_SUPABASE_ANON_KEY=your-anon-key
-```
-
-Without real credentials, the site runs in **Sandbox Demo Mode** with a local mock database.
-
-## 🔑 Admin Portal
-
-Visit `/admin` and log in with:
-
-| Mode | Email | Password |
-|---|---|---|
-| Sandbox Demo | `admin@weldon.com` | `weldon123` |
-| Live (Supabase) | Your Supabase Auth user | Your password |
-
-## 📋 Database Setup
-
-Run the SQL in `supabase/migrations/20260628000000_init.sql` in your Supabase SQL editor to create:
-
-- `leads` — Form submissions / quote requests
-- `gallery_projects` — Before & After portfolio photos
-- `site_settings` — CMS content (slogan, phone, address, etc.)
-
-## 📞 Business Info
-
-**Weldon Excavating LLC**  
-1485 Stockdale Rd, Munford, AL 36268  
-📞 (256) 223-7541 | 📧 weldonmatt@yahoo.com  
-*"Your Site. Our Strength."*
+See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.

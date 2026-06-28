@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Phone, Mail, MapPin, ShieldCheck, Clock, Facebook } from 'lucide-react';
+import { Phone, Mail, MapPin, ShieldCheck, Clock } from 'lucide-react';
 import LeadForm from '../components/LeadForm';
 
 export default function Contact() {

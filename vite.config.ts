@@ -10,15 +10,6 @@ export default defineConfig({
     open: true,
   },
   build: {
-    // Enable code splitting & tree-shaking for production
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          supabase: ['@supabase/supabase-js'],
-        },
-      },
-    },
     // Minify for production
     minify: 'esbuild',
     // Optimize target for modern browsers

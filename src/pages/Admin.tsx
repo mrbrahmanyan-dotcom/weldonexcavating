@@ -68,7 +68,7 @@ export default function Admin() {
     document.title = "Admin Dashboard | Weldon Excavating LLC";
     
     // Check current session
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    supabase.auth.getSession().then(({ data: { session } }: any) => {
       setSession(session);
       if (session) {
         loadData();
